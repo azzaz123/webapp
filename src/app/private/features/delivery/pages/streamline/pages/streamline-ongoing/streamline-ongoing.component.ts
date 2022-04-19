@@ -13,8 +13,8 @@ import { catchError } from 'rxjs/operators';
 import { Request } from '@api/core/model/delivery';
 import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
 import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
-import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/delivery-payment-ready/enums/payment-continued-post-action.enum';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -28,7 +28,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
   constructor(
     private streamlineOngoingUIService: StreamlineOngoingUIService,
-    private deliveryPaymentReadyService: DeliveryPaymentReadyService,
+    private continueDeliveryPaymentService: ContinueDeliveryPaymentService,
     private router: Router,
     private errorActionService: SharedErrorActionService
   ) {}
@@ -63,8 +63,8 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     if (isRequest) {
       isCurrentUserTheSeller
         ? this.redirectToAcceptScreen(requestId)
-        : this.deliveryPaymentReadyService
-            .continueBuyerRequestBuyFlow(requestId, historicElement.payload.item.id, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
+        : this.continueDeliveryPaymentService
+            .continue(requestId, historicElement.payload.item.id, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
             .subscribe();
       return;
     }

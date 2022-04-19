@@ -3,6 +3,7 @@ import {
   MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ONLY_CREDIT_CARD,
   MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE_WITH_AVAILABLE_METHODS,
   MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE_WITH_NON_AVAILABLE_METHODS,
+  MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ALL_PAYMENT_METHODS,
 } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 
 describe('mapPaymentsPaymentMethodsDtoToPaymentsPaymentMethods', () => {
@@ -13,7 +14,7 @@ describe('mapPaymentsPaymentMethodsDtoToPaymentsPaymentMethods', () => {
           MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE_WITH_AVAILABLE_METHODS
         );
 
-        expect(mappedUserPaymentPreferences).toEqual(MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ONLY_CREDIT_CARD);
+        expect(mappedUserPaymentPreferences).toEqual(MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ALL_PAYMENT_METHODS);
       });
     });
 

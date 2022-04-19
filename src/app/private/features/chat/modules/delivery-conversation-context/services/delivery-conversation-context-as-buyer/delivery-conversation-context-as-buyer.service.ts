@@ -22,8 +22,8 @@ import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { BUYER_REQUEST_PAYMENT_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-payment-status.enum';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
-import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/delivery-payment-ready/enums/payment-continued-post-action.enum';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -36,7 +36,7 @@ export class DeliveryConversationContextAsBuyerService {
     private modalService: NgbModal,
     private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService,
     private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService,
-    private deliveryPaymentReadyService: DeliveryPaymentReadyService
+    private continueDeliveryPaymentService: ContinueDeliveryPaymentService
   ) {}
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -77,8 +77,8 @@ export class DeliveryConversationContextAsBuyerService {
   }
 
   private openContinuePaymentFlow(): void {
-    this.deliveryPaymentReadyService
-      .continueBuyerRequestBuyFlow(this.lastRequest.id, this.lastRequest.itemHash, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
+    this.continueDeliveryPaymentService
+      .continue(this.lastRequest.id, this.lastRequest.itemHash, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
       .subscribe();
   }
 

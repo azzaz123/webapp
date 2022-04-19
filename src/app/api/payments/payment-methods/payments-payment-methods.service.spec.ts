@@ -2,8 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import {
-  MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ONLY_CREDIT_CARD,
   MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE,
+  MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ALL_PAYMENT_METHODS,
 } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsPaymentMethodsHttpService } from '@api/payments/payment-methods/http/payments-payment-methods-http.service';
@@ -44,7 +44,7 @@ describe('PaymentsPaymentMethodsService', () => {
 
       service.paymentMethods.subscribe((data) => (response = data));
 
-      expect(response).toEqual(MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ONLY_CREDIT_CARD);
+      expect(response).toEqual(MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ALL_PAYMENT_METHODS);
     });
   });
 });

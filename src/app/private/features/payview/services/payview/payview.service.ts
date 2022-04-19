@@ -29,13 +29,12 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { catchError, concatMap, filter, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of, throwError } from 'rxjs';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
-import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
-import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { UserPaymentPreferencesUnknownError } from '@api/core/errors/delivery/payview/user-payment-preferences';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -54,7 +53,7 @@ export class PayviewService {
     private paymentsClientBrowserInfoApiService: PaymentsClientBrowserInfoApiService,
     private paymentMethodsService: PaymentsPaymentMethodsService,
     private paymentPreferencesService: PaymentsUserPaymentPreferencesService,
-    private deliveryPaymentReadyService: DeliveryPaymentReadyService,
+    private continueDeliveryPaymentService: ContinueDeliveryPaymentService,
     private deliveryRealTimeService: DeliveryRealTimeService,
     private toastService: ToastService,
     private walletsService: PaymentsWalletsService
@@ -167,7 +166,13 @@ export class PayviewService {
       .pipe(
         concatMap(() =>
           this.listenToThreeDomainNotification().pipe(
-            concatMap(() => this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(state.buyerRequestId, state.itemDetails.itemHash))
+            concatMap(() =>
+              this.continueDeliveryPaymentService.continue(
+                state.buyerRequestId,
+                state.itemDetails.itemHash,
+                PAYMENT_CONTINUED_POST_ACTION.NONE
+              )
+            )
           )
         )
       );
