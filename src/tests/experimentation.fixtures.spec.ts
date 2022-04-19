@@ -3,9 +3,8 @@ import { of } from 'rxjs';
 export const OptimizelyServiceMock = {
   initialize: () => {},
   isReady$: of(false),
-  initExperimentContext: () => {},
   getVariations: () => {},
-  track: () => {},
+  setNewOptimizelyUserAttributes: () => {},
 };
 
 export const OptimizeServiceMock = {
@@ -17,4 +16,5 @@ export const ExperimentationServiceMock = {
   initializeExperimentationWithUnauthenticatedUser: () => {},
   initExperimentContext: () => {},
   getVariations: () => {},
+  initializeOptimizelyService: () => {},
 };

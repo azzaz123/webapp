@@ -12,13 +12,6 @@ import { InitializeAuthenticatedUserService } from './initialize-authenticated-u
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 import { PermissionsInitializerServiceMock } from '@fixtures/permissions-initializer.fixtures.spec';
-import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
-import { RealTimeService } from '@core/message/real-time.service';
-import { CallsService } from '@core/conversation/calls.service';
-import { of } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
-import { EventService } from '@core/event/event.service';
-import { AccessTokenService } from '@core/http/access-token.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 
 describe('InitializeAuthenticatedUserService', () => {
