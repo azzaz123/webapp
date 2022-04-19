@@ -11,12 +11,13 @@ import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/eve
 import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
 import { TransactionPaymentSuccess } from '@core/analytics/resources/events-interfaces/transaction-payment-success.interface';
 import { TransactionCheckoutError } from '@core/analytics/resources/events-interfaces/transaction-checkout-error.interface';
+import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PayviewTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private searchIdService: SearchIdService) {}
 
   public trackViewTransactionPayScreen(attributes: ViewTransactionPayScreen): void {
     const pageViewEvent: AnalyticsPageView<ViewTransactionPayScreen> = {
@@ -81,7 +82,10 @@ export class PayviewTrackingEventsService {
     const event: AnalyticsEvent<PayTransaction> = {
       name: ANALYTICS_EVENT_NAMES.PayTransaction,
       eventType: ANALYTIC_EVENT_TYPES.Transaction,
-      attributes,
+      attributes: {
+        ...attributes,
+        searchId: this.searchIdService.getSearchIdByItemId(attributes.itemId),
+      },
     };
 
     this.analyticsService.trackEvent(event);
