@@ -24,9 +24,11 @@ import { StreamlineOngoingComponent } from '@private/features/delivery/pages/str
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
-import { ReplaySubject, throwError } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 const PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
@@ -34,6 +36,8 @@ describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
   let fixture: ComponentFixture<StreamlineOngoingComponent>;
   let streamlineOngoingUIService: StreamlineOngoingUIService;
+  let continueDeliveryPaymentService: ContinueDeliveryPaymentService;
+  let errorActionService: SharedErrorActionService;
   let router: Router;
 
   let loadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
@@ -58,6 +62,7 @@ describe('StreamlineOngoingComponent', () => {
         },
         { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
         { provide: NgbModal, useClass: NgbModalMock },
+        { provide: ContinueDeliveryPaymentService, useValue: { continue: () => of(null) } },
       ],
     }).compileComponents();
   });
@@ -68,9 +73,12 @@ describe('StreamlineOngoingComponent', () => {
 
     router = TestBed.inject(Router);
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
+    continueDeliveryPaymentService = TestBed.inject(ContinueDeliveryPaymentService);
+    errorActionService = TestBed.inject(SharedErrorActionService);
 
     fixture.detectChanges();
     spyOn(router, 'navigate');
+    spyOn(continueDeliveryPaymentService, 'continue').and.callThrough();
   });
 
   it('should create', () => {
@@ -129,13 +137,17 @@ describe('StreamlineOngoingComponent', () => {
     describe('when user clicks on a historic element', () => {
       describe('and the element is a request', () => {
         describe('and the user is the buyer', () => {
-          it('should navigate to the tracking page with the id', () => {
-            const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.id}`;
+          beforeEach(() => component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER));
+          it('should delegate click handle to continue payment logic once', () => {
+            expect(continueDeliveryPaymentService.continue).toHaveBeenCalledTimes(1);
+          });
 
-            component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER);
-
-            expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+          it('should delegate click handle to continue payment logic with valid data', () => {
+            expect(continueDeliveryPaymentService.continue).toHaveBeenCalledWith(
+              MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.id,
+              MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.payload.item.id,
+              PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS
+            );
           });
         });
 
@@ -172,53 +184,21 @@ describe('StreamlineOngoingComponent', () => {
     });
   });
 
+  describe('when there is an error retrieving the list', () => {
+    beforeEach(() => {
+      spyOn(errorActionService, 'show');
+
+      historicListReplaySubject.error('Errorsito');
+    });
+
+    it('should show the generic error catcher', fakeAsync(() => {
+      expect(errorActionService.show).toHaveBeenCalledTimes(1);
+    }));
+  });
+
   function countHistoricElementsFromList(historicList: HistoricList): number {
     let totalHistoricElements = 0;
     historicList.elements.forEach((h) => h.elements.forEach((st) => st.elements.forEach(() => totalHistoricElements++)));
     return totalHistoricElements;
   }
-});
-
-describe('WHEN there is an error retrieving the shipping list', () => {
-  let errorActionSpy;
-  let streamlineOngoingUIService;
-  let errorActionService;
-  let component: StreamlineOngoingComponent;
-  let fixture: ComponentFixture<StreamlineOngoingComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule, HistoricListModule, SvgIconModule],
-      declarations: [StreamlineOngoingComponent],
-      providers: [
-        {
-          provide: StreamlineOngoingUIService,
-          useValue: {
-            get historicList$() {
-              return throwError('The server is broken');
-            },
-            getItems: () => {},
-            reset: () => {},
-          },
-        },
-        { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
-      ],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    jest.spyOn(streamlineOngoingUIService, 'historicList$', 'get').mockReturnValue(throwError('The server is broken'));
-    errorActionService = TestBed.inject(SharedErrorActionService);
-    errorActionSpy = spyOn(errorActionService, 'show');
-
-    fixture = TestBed.createComponent(StreamlineOngoingComponent);
-    component = fixture.componentInstance;
-
-    fixture.detectChanges();
-  });
-
-  it('should show the generic error catcher', fakeAsync(() => {
-    expect(errorActionSpy).toHaveBeenCalledTimes(1);
-  }));
 });

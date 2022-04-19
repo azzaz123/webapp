@@ -1,0 +1,19 @@
+<div class="ContinueToPayPalModal d-flex flex-column w-100 align-items-center p-4">
+  <img [src]="paypalIconUrl" alt="paypal" class="ContinueToPayPalModal__paypalLogo mb-3" />
+  <span
+    i18n="@@pay_view_buyer_modal_3ds_confirm_payment_paypal_specific_description"
+    class="mb-4 text-center ContinueToPayPalModal__description"
+    >For your payment to be secure, you must authorize it through PayPal. It's a simple process!</span
+  >
+  <tsl-button
+    i18n="@@pay_view_buyer_modal_3ds_confirm_payment_paypal_specific_continue_button"
+    (click)="onClose(CONTINUE_TO_PAYPAL_CLOSURE_REASON.CONTINUE)"
+    >Continue</tsl-button
+  >
+  <tsl-button
+    i18n="@@pay_view_buyer_modal_3ds_confirm_payment_paypal_specific_cancel_button"
+    [className]="'btn-link'"
+    (click)="onClose(CONTINUE_TO_PAYPAL_CLOSURE_REASON.CANCEL)"
+    >Cancel</tsl-button
+  >
+</div>

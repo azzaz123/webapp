@@ -6,7 +6,7 @@
     <span *ngIf="!itemPreview.id" i18n="@@web_upload_modals_preview_modal_367">Post Ad</span>
     <span *ngIf="itemPreview.id" i18n="@@web_upload_modals_preview_modal_368">Update</span>
   </button>
-  <ngb-carousel interval="0">
+  <ngb-carousel [interval]="0">
     <ng-template ngbSlide *ngFor="let image of itemPreview.images">
       <img [src]="image.preview" />
     </ng-template>

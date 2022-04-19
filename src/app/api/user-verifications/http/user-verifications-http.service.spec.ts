@@ -10,7 +10,13 @@ import { MOCK_USER_VERIFICATIONS_API_RESPONSE } from '@api/fixtures/user-verific
 import { VERIFICATION_TYPE } from '../dtos/requests';
 import { EmailVerificationApi, UserVerificationsApi } from '../dtos/responses';
 import { PhoneVerificationApi } from '../dtos/responses/phone-verification-api.interface';
-import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT, VERIFY_USER_ENDPOINT } from './endpoints';
+import {
+  EXTRA_INFO_ENDPOINT,
+  PASSWORD_RECOVERY_ENDPOINT,
+  SEND_VERIFY_EMAIL_ENDPOINT,
+  SEND_VERIFY_PHONE_ENDPOINT,
+  VERIFY_USER_ENDPOINT,
+} from './endpoints';
 
 import { UserVerificationsHttpService } from './user-verifications-http.service';
 
@@ -89,6 +95,23 @@ describe('UserVerificationsHttpService', () => {
       expect(req.request.method).toBe('POST');
       expect(response).toEqual(MOCK_PHONE_VERIFICATION_API_RESPONSE);
       expect(req.request.body).toEqual({ mobileNumber: null, code: smsCode, type: VERIFICATION_TYPE.PHONE });
+    });
+  });
+
+  describe('when asking to recover the password', () => {
+    it('should retrieve an empty response', (done) => {
+      const email = 'test@test.com';
+      let params: URLSearchParams = new URLSearchParams();
+      params.append('emailAddress', email);
+
+      service.passwordRecovery(email).subscribe(() => {
+        done();
+      });
+      const req: TestRequest = httpMock.expectOne(PASSWORD_RECOVERY_ENDPOINT);
+      req.flush('', { status: 204, statusText: '' });
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(params);
     });
   });
 });

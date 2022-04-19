@@ -33,11 +33,14 @@ import { DeliveryConversationContextAsBuyerService } from './delivery-conversati
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 describe('DeliveryConversationContextAsBuyerService', () => {
   const featuresEnabledSubject: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   let service: DeliveryConversationContextAsBuyerService;
+  let continueDeliveryPaymentService: ContinueDeliveryPaymentService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
   let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
@@ -64,9 +67,16 @@ describe('DeliveryConversationContextAsBuyerService', () => {
             featuresEnabled$: featuresEnabledSubject.asObservable(),
           },
         },
+        {
+          provide: ContinueDeliveryPaymentService,
+          useValue: {
+            continue: () => of(null),
+          },
+        },
       ],
     });
     service = TestBed.inject(DeliveryConversationContextAsBuyerService);
+    continueDeliveryPaymentService = TestBed.inject(ContinueDeliveryPaymentService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
     deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
@@ -238,30 +248,69 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   });
 
   describe('when handling third voices CTA click', () => {
+    beforeEach(() => {
+      spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+      spyOn(continueDeliveryPaymentService, 'continue').and.callThrough();
+    });
+
     describe('and when there is last buyer request', () => {
-      beforeEach(fakeAsync(() => {
-        spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_ACCEPTED));
-        spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+      describe('and when last buyer request does NOT need to continue payment', () => {
+        beforeEach(fakeAsync(() => {
+          spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_ACCEPTED));
 
-        service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
-        tick();
-        tick();
-      }));
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
+          tick();
+          tick();
+          service.handleThirdVoiceCTAClick();
+        }));
 
-      it('should redirect to TTS', () => {
-        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUEST_ACCEPTED.id}`;
+        it('should redirect to TTS once', () => {
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+        });
 
-        service.handleThirdVoiceCTAClick();
+        it('should redirect to TTS URL', () => {
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUEST_ACCEPTED.id}`;
 
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+        });
+
+        it('should NOT open continue payment flow', () => {
+          expect(continueDeliveryPaymentService.continue).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('and when last buyer request does need to continue payment flow', () => {
+        beforeEach(fakeAsync(() => {
+          spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_PAYMENT_READY));
+
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
+          tick();
+          tick();
+          service.handleThirdVoiceCTAClick();
+          tick();
+        }));
+
+        it('should ask to continue payment flow once', () => {
+          expect(continueDeliveryPaymentService.continue).toHaveBeenCalledTimes(1);
+        });
+
+        it('should ask to continue payment flow with last buyer request and redirect to TTS as fallback', () => {
+          expect(continueDeliveryPaymentService.continue).toHaveBeenCalledWith(
+            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+            PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS
+          );
+        });
+
+        it('should NOT redirect to TTS (redirect will be done when payment is done)', () => {
+          expect(router.navigate).not.toHaveBeenCalled();
+        });
       });
     });
 
     describe('and when there is no last buyer request', () => {
       beforeEach(fakeAsync(() => {
         spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(null));
-        spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
 
         service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
         tick();

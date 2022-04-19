@@ -5,7 +5,7 @@ import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delive
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { combineLatest, Observable } from 'rxjs';
-import { concatMap, map, tap } from 'rxjs/operators';
+import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import {
   ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
   BUY_DELIVERY_BANNER_PROPERTIES,
@@ -21,6 +21,9 @@ import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/sta
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
+import { BUYER_REQUEST_PAYMENT_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-payment-status.enum';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -32,7 +35,8 @@ export class DeliveryConversationContextAsBuyerService {
     private router: Router,
     private modalService: NgbModal,
     private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService,
-    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService
+    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService,
+    private continueDeliveryPaymentService: ContinueDeliveryPaymentService
   ) {}
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -55,11 +59,12 @@ export class DeliveryConversationContextAsBuyerService {
   }
 
   public handleThirdVoiceCTAClick(): void {
-    const isLastRequestPresent: boolean = !!this.lastRequest;
-    if (isLastRequestPresent) {
-      const { id } = this.lastRequest;
-      this.redirectToTTS(id);
+    const noLastRequest: boolean = !this.lastRequest;
+    if (noLastRequest) {
+      return;
     }
+
+    this.requestNeedsPayment() ? this.openContinuePaymentFlow() : this.redirectToTTS(this.lastRequest.id);
   }
 
   public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
@@ -69,6 +74,12 @@ export class DeliveryConversationContextAsBuyerService {
     }
 
     return this.openAwarenessModal();
+  }
+
+  private openContinuePaymentFlow(): void {
+    this.continueDeliveryPaymentService
+      .continue(this.lastRequest.id, this.lastRequest.itemHash, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
+      .subscribe();
   }
 
   private redirectToPayview(conversation: InboxConversation): void {
@@ -120,6 +131,14 @@ export class DeliveryConversationContextAsBuyerService {
     }
 
     return null;
+  }
+
+  private requestNeedsPayment(): boolean {
+    if (!this.lastRequest) {
+      return false;
+    }
+
+    return this.lastRequest.status.payment === BUYER_REQUEST_PAYMENT_STATUS.READY;
   }
 
   private openAwarenessModal(): void {

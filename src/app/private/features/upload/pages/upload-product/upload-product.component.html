@@ -38,7 +38,7 @@
             formControlName="category_id"
             id="category"
             [options]="categories"
-            noFilter="10"
+            [noFilter]="10"
             (selected)="resetAllExtraFields()"
           >
             <ng-template #optionTemplate let-option="option">
@@ -73,7 +73,7 @@
             formControlName="currency_code"
             id="currency"
             [options]="currencies"
-            noFilter="10"
+            [noFilter]="10"
           ></tsl-dropdown>
         </div>
       </div>
@@ -124,7 +124,7 @@
               i18n-placeholder="@@web_upload_product_subcategory_placeholder"
               placeholder="Subcategory"
               [options]="objectTypesOptions"
-              noFilter="10"
+              [noFilter]="10"
               (selected)="resetCommonExtraFields()"
             >
             </tsl-dropdown>
@@ -145,7 +145,7 @@
               i18n-placeholder="@@web_upload_product_subcategory2_placeholder"
               placeholder="Could you specify?"
               [options]="objectTypesOptions2"
-              noFilter="10"
+              [noFilter]="10"
             >
             </tsl-dropdown>
           </div>

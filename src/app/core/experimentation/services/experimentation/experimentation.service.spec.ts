@@ -7,10 +7,9 @@ import { UserService } from '@core/user/user.service';
 import { OptimizeService } from '@core/experimentation/vendors/optimize/optimize.service';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { OptimizelyServiceMock, OptimizeServiceMock } from '@fixtures/experimentation.fixtures.spec';
-import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
 import { OptimizelyService } from '@core/experimentation/vendors/optimizely/optimizely.service';
 import { OptimizelyDecideOption } from '@optimizely/optimizely-sdk';
-import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
+import { OPTIMIZELY_EXPERIMENT_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-experiment-keys';
 
 describe('ExperimentService', () => {
   let service: ExperimentationService;
@@ -52,62 +51,67 @@ describe('ExperimentService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when initializing', () => {
-    describe('and is a non logged user', () => {
-      it('should not initialize optimizely service', fakeAsync(() => {
-        spyOn(OptimizelyServiceMock, 'initialize');
+  describe('when initializing optimizely', () => {
+    it('should initialize optimizely service', fakeAsync(() => {
+      spyOn(OptimizelyServiceMock, 'initialize');
 
-        service.initializeExperimentationWithUnauthenticatedUser();
-        tick();
-
-        expect(OptimizelyServiceMock.initialize).not.toHaveBeenCalled();
-      }));
-    });
-
-    describe('and is a logged user', () => {
-      it('should initialize optimizely service', fakeAsync(() => {
-        spyOn(OptimizelyServiceMock, 'initialize');
-
-        service.initializeExperimentationWithAuthenticatedUser();
-        tick();
-
-        expect(OptimizelyServiceMock.initialize).toHaveBeenCalled();
-      }));
-    });
-  });
-
-  describe('when the user is ready', () => {
-    it('should initialize the experiment context', fakeAsync(() => {
-      spyOn(OptimizelyServiceMock, 'initExperimentContext');
-
-      service.initExperimentContext({ age: '25' });
+      service.initializeOptimizelyService();
       tick();
 
-      expect(OptimizelyServiceMock.initExperimentContext).toHaveBeenCalledWith({ age: '25' });
+      expect(OptimizelyServiceMock.initialize).toHaveBeenCalled();
     }));
+  });
+
+  describe('when optimizely is ready', () => {
+    beforeEach(() => {
+      spyOn(OptimizelyServiceMock, 'getVariations').and.returnValue({
+        [OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest]: {
+          variationKey: 'variant_a',
+          enabled: true,
+          ruleKey: 'exp_innovation_test',
+        },
+      });
+    });
 
     it('should get the variations', fakeAsync(() => {
-      spyOn(OptimizelyServiceMock, 'getVariations');
-
       service.getVariations({
-        flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
-        options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
+        flagKeys: [OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest],
       });
       tick();
 
       expect(OptimizelyServiceMock.getVariations).toHaveBeenCalledWith({
-        flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
-        options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
+        flagKeys: [OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest],
       });
     }));
 
-    it('should call the optimizely tracking event', fakeAsync(() => {
-      spyOn(OptimizelyServiceMock, 'track');
-
-      service.trackOptimizelyEvent({ eventKey: ANALYTICS_EVENT_NAMES.ClickAcceptOffer });
+    it('should return if the flag is enabled', fakeAsync(() => {
+      const isEnabled = service.isFlagEnabled(OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest);
       tick();
 
-      expect(OptimizelyServiceMock.track).toHaveBeenCalledWith({ eventKey: ANALYTICS_EVENT_NAMES.ClickAcceptOffer });
+      expect(OptimizelyServiceMock.getVariations).toHaveBeenCalledWith({
+        flagKeys: [OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest],
+        options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
+      });
+      expect(isEnabled).toBe(true);
     }));
+
+    it('should return the variation of the flag', fakeAsync(() => {
+      const variation = service.getVariationFromFlag(OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest);
+      tick();
+
+      expect(OptimizelyServiceMock.getVariations).toHaveBeenCalledWith({
+        flagKeys: [OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest],
+      });
+      expect(variation).toBe('variant_a');
+    }));
+
+    it('should propagate new optimizely attributes', () => {
+      spyOn(optimizelyService, 'setNewOptimizelyUserAttributes');
+      const newAttributes = { test: 'some new attributes' };
+
+      service.setNewOptimizelyUserAttributes(newAttributes);
+
+      expect(optimizelyService.setNewOptimizelyUserAttributes).toHaveBeenCalledWith(newAttributes);
+    });
   });
 });

@@ -10,7 +10,7 @@ import { find } from 'lodash-es';
 export class SelectComponent implements OnChanges {
   @Input() public items: SelectOption[];
   // eslint-disable-next-line @angular-eslint/no-output-rename
-  @Output('valueChanges') public value$: EventEmitter<SelectOption> = new EventEmitter<SelectOption>();
+  @Output('valueChanges') public value$: EventEmitter<string> = new EventEmitter<string>();
   @Input() value: any;
   public selected: SelectOption;
 
