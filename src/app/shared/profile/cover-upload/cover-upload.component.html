@@ -6,7 +6,7 @@
     <div class="row mb-2">
       <div class="col-12">
         <tsl-user-cover (click)="clickNotPro.emit()" [user]="user"
-          [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium" size="80" class="small-rounded"></tsl-user-cover>
+          [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium" [size]="80" class="small-rounded"></tsl-user-cover>
       </div>
     </div>
     <div class="row" *ngIf="isPro">

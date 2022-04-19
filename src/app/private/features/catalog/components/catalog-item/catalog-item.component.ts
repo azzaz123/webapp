@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
@@ -16,6 +16,7 @@ import { ItemDetailRoutePipe } from '@shared/pipes';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { LEGACY_CATEGORY_IDS } from '@core/category/category-ids';
+import { ItemAvatarComponent } from '@shared/item-avatar/item-avatar.component';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -26,6 +27,8 @@ export class CatalogItemComponent implements OnInit {
   @Input() item: Item;
   @Input() showPublishCTA = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
+  @ViewChild(ItemAvatarComponent) itemAvatarComponent: ItemAvatarComponent;
+
   public readonly PERMISSIONS = PERMISSIONS;
   public link: string;
   public selectMode = false;
@@ -57,12 +60,14 @@ export class CatalogItemComponent implements OnInit {
     if (!item.reserved) {
       this.itemService.selectedAction = 'reserve';
       this.itemService.reserveItem(item.id, true).subscribe(() => {
-        item.reserved = true;
+        this.item.reserved = true;
+        this.itemAvatarComponent.cdr.markForCheck(); // TODO WPA-12854
       });
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
-        item.reserved = false;
-        this.eventService.emit(EventService.ITEM_RESERVED, item);
+        this.item.reserved = false;
+        this.eventService.emit(EventService.ITEM_RESERVED, this.item);
+        this.itemAvatarComponent.cdr.markForCheck();
       });
     }
   }

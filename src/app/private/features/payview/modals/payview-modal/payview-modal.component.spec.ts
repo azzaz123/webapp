@@ -28,7 +28,11 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
-import { MOCK_PAYVIEW_STATE, MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import {
+  MOCK_PAYVIEW_STATE,
+  MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD,
+  MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_METHODS,
+} from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { PaymentsPaymentMethod } from '@api/core/model/payments';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
@@ -81,7 +85,7 @@ import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { headerTitles } from '../../constants/header-titles';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
 import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PAYVIEW_BUY_EVENT_TYPE } from '../../modules/buy/enums/payview-buy-event-type.enum';
@@ -161,6 +165,7 @@ describe('PayviewModalComponent', () => {
   const payviewModalBackSelector: string = `${payviewModal}__back`;
   const payviewModalHelpSelector: string = '#helpLink';
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
+  const deliveryPointSelector: string = `${payviewModal}__content`;
 
   let component: PayviewModalComponent;
   let customerHelpService: CustomerHelpService;
@@ -262,9 +267,9 @@ describe('PayviewModalComponent', () => {
           },
         },
         {
-          provide: DeliveryPaymentReadyService,
+          provide: ContinueDeliveryPaymentService,
           useValue: {
-            continueBuyerRequestBuyFlow() {
+            continue() {
               return of(null);
             },
           },
@@ -1381,6 +1386,28 @@ describe('PayviewModalComponent', () => {
           const target = debugElement.query(By.directive(PayviewPromotionOverviewComponent));
 
           expect((target.componentInstance as PayviewPromotionOverviewComponent).costs).toEqual(MOCK_PAYVIEW_STATE.costs);
+        });
+      });
+
+      describe('when NOT getting delivery methods', () => {
+        beforeEach(() => {
+          jest
+            .spyOn(payviewStateManagementService, 'payViewState$', 'get')
+            .mockReturnValue(of(MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_METHODS));
+          fixture = TestBed.createComponent(FakeComponent);
+          component = fixture.componentInstance;
+          debugElement = fixture.debugElement;
+
+          fixture.detectChanges();
+          // FIX ME: we need to delete the next line, this should not be hardcalled
+          component['markPayviewAsNotLoading']();
+          fixture.detectChanges();
+        });
+
+        it('should not show the delivery points', () => {
+          const target = fixture.debugElement.query(By.css(deliveryPointSelector));
+
+          expect(target).toBeFalsy();
         });
       });
     });

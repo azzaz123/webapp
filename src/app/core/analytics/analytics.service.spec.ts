@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
@@ -11,6 +11,10 @@ import { mParticle } from '@core/analytics/mparticle.constants';
 
 const user = {
   setUserAttribute: () => {},
+};
+
+const optimizelyKit = {
+  register: () => {},
 };
 
 jest.mock('@core/analytics/mparticle.constants', () => ({
@@ -31,6 +35,8 @@ jest.mock('@core/analytics/mparticle.constants', () => ({
     register: () => {},
   },
 }));
+
+jest.mock('@mtempranowalla/web-optimizely-kit', () => optimizelyKit);
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
@@ -98,15 +104,18 @@ describe('AnalyticsService', () => {
     });
 
     describe('when there is a user logged with email and id', () => {
-      it('should initialize the analytics library with email and id', () => {
+      it('should initialize the analytics library with email and id', fakeAsync(() => {
         spyOn(mParticle, 'init').and.callThrough();
+        spyOn(optimizelyKit, 'register');
         const expectedIdentities = {
           customerid: MOCK_FULL_USER.id,
           email: MOCK_FULL_USER.email,
         };
 
         service.initializeAnalyticsWithAuthenticatedUser(MOCK_FULL_USER);
+        tick();
 
+        expect(optimizelyKit.register).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {
           identifyRequest: { userIdentities: expectedIdentities },
@@ -114,7 +123,7 @@ describe('AnalyticsService', () => {
           isDevelopmentMode: expect.anything(),
           dataPlan: expect.anything(),
         });
-      });
+      }));
     });
 
     describe('when there is not a user logged with email and id', () => {

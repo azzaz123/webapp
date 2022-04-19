@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,10 +7,11 @@ import {
   checkDeliveryInstructionsDeeplinkPrefix,
   createDisputeZendeskFormDeeplinkPrefix,
   itemDeeplinkPrefix,
+  payDeeplinkPrefix,
   printableLabelDeeplinkPrefix,
   userProfileDeeplinkPrefix,
   zendeskArticleDeeplinkPrefix,
-} from '@api/core/utils/deeplink/deeplink-prefixes';
+} from '@shared/deeplink/constants/deeplink-prefixes';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID } from '@core/external-links/customer-help/enums/external-customer-ticket-form-page-id.enum';
 import { getCustomerHelpUrl, UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID } from '@core/external-links/customer-help/get-customer-help-url';
@@ -19,7 +19,7 @@ import { getTicketFormUrl } from '@core/external-links/customer-help/get-ticket-
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_PAYVIEW, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
@@ -27,74 +27,27 @@ import { User } from '@core/user/user';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { UserService } from '@core/user/user.service';
 
-import { Observable, of, Subscriber } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-
-type deeplinkType =
-  | 'unknown'
-  | 'barcodeLabel'
-  | 'instructions'
-  | 'item'
-  | 'printableLabel'
-  | 'userProfile'
-  | 'zendeskArticle'
-  | 'zendeskForm';
+import { DeeplinkType } from '../types/deeplink.type';
+import { deeplinkAvailabilities } from '../constants/deeplink-availability';
+import { deeplinkExternalNavigation } from '../constants/deeplink-external-navigation';
+import { catchError, map, take, tap } from 'rxjs/operators';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 
 @Injectable()
 export class DeeplinkService {
   constructor(
     @Inject(LOCALE_ID) private locale: APP_LOCALE,
     @Inject(WINDOW_TOKEN) private window: Window,
-    private itemDetailRoutePipe: ItemDetailRoutePipe,
-    private itemService: ItemService,
-    private userProfileRoutePipe: UserProfileRoutePipe,
     private router: Router,
+    private toastService: ToastService,
+    private itemService: ItemService,
+    private itemDetailRoutePipe: ItemDetailRoutePipe,
     private userService: UserService,
-    private toastService: ToastService
+    private userProfileRoutePipe: UserProfileRoutePipe,
+    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService
   ) {}
-
-  public isAvailable(deeplink: string): boolean {
-    const availabilities: Record<deeplinkType, boolean> = {
-      barcodeLabel: true,
-      instructions: true,
-      item: true,
-      printableLabel: true,
-      unknown: false,
-      userProfile: true,
-      zendeskArticle: true,
-      zendeskForm: true,
-    };
-
-    return availabilities[this.getDeeplinkType(deeplink)];
-  }
-
-  public isBarcodeLabelDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'barcodeLabel';
-  }
-
-  public isInstructionsDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'instructions';
-  }
-
-  public isItemDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'item';
-  }
-
-  public isPrintableLabelDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'printableLabel';
-  }
-
-  public isUserProfileDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'userProfile';
-  }
-
-  public isZendeskArticleDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'zendeskArticle';
-  }
-
-  public isZendeskCreateDisputeFormDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'zendeskForm';
-  }
 
   public navigate(deeplink: string): void {
     if (!this.isAvailable(deeplink)) {
@@ -104,39 +57,64 @@ export class DeeplinkService {
     this.isExternalNavigation(deeplink) ? this.navigateToUrl(deeplink) : this.navigateToRoute(deeplink);
   }
 
+  //FIXME: This should be private
   public toWebLink(deeplink: string): Observable<string> {
     if (!deeplink) {
       return of(null);
     }
-    if (this.getDeeplinkType(deeplink) === 'userProfile') {
+
+    const deeplinkType: DeeplinkType = this.getDeeplinkType(deeplink);
+
+    if (deeplinkType === 'userProfile') {
       return this.getUserProfileWebLink(deeplink);
     }
-    if (this.getDeeplinkType(deeplink) === 'item') {
+    if (deeplinkType === 'item') {
       return this.getItemWebLink(deeplink);
     }
+    if (deeplinkType === 'pay') {
+      return this.getPayviewWebLink(deeplink).pipe(tap((link) => link === '' && this.showNotAvailableFeatureToast()));
+    }
 
-    const deeplinkMappers: Record<deeplinkType, string> = {
-      barcodeLabel: this.getBarcodeWebLink(deeplink),
-      instructions: this.getInstructionsWebLink(deeplink),
-      item: null,
-      printableLabel: this.getPrintableLabelWebLink(deeplink),
-      userProfile: null,
-      zendeskArticle: this.getZendeskArticleWebLink(deeplink),
-      zendeskForm: this.getZendeskCreateDisputeFormWebLink(deeplink),
-      unknown: null,
-    };
-    return of(deeplinkMappers[this.getDeeplinkType(deeplink)]);
+    return of(this.deeplinkMappers(deeplinkType, deeplink));
   }
 
-  private getBarcodeWebLink(deeplink: string): string {
-    const params = this.getParams(deeplink);
-    const barcode = !!params && !!params[0] ? params[0].split('=').pop() : null;
-    return !!barcode ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.BARCODE}/${barcode}` : null;
+  private isAvailable(deeplink: string): boolean {
+    return deeplinkAvailabilities[this.getDeeplinkType(deeplink)];
   }
 
-  private getDeeplinkType(deeplink: string): deeplinkType {
+  private isExternalNavigation(deeplink: string): boolean {
+    return deeplinkExternalNavigation[this.getDeeplinkType(deeplink)];
+  }
+
+  private deeplinkMappers(deeplinkType: DeeplinkType, deeplink: string): string {
+    if (deeplinkType === 'barcodeLabel') {
+      return this.getBarcodeWebLink(deeplink);
+    }
+    if (deeplinkType === 'instructions') {
+      return this.getInstructionsWebLink(deeplink);
+    }
+    if (deeplinkType === 'printableLabel') {
+      return this.getPrintableLabelWebLink(deeplink);
+    }
+    if (deeplinkType === 'zendeskArticle') {
+      return this.getZendeskArticleWebLink(deeplink);
+    }
+    if (deeplinkType === 'zendeskForm') {
+      return this.getZendeskCreateDisputeFormWebLink(deeplink);
+    }
+    if (deeplinkType === 'unknown') {
+      return null;
+    }
+
+    return null;
+  }
+
+  private getDeeplinkType(deeplink: string): DeeplinkType {
     if (deeplink.startsWith(barcodeLabelDeeplinkPrefix)) {
       return 'barcodeLabel';
+    }
+    if (deeplink.startsWith(payDeeplinkPrefix)) {
+      return 'pay';
     }
     if (deeplink.startsWith(checkDeliveryInstructionsDeeplinkPrefix)) {
       return 'instructions';
@@ -159,6 +137,12 @@ export class DeeplinkService {
     return 'unknown';
   }
 
+  private getBarcodeWebLink(deeplink: string): string {
+    const params = this.getParams(deeplink);
+    const barcode = !!params && !!params[0] ? params[0].split('=').pop() : null;
+    return !!barcode ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.BARCODE}/${barcode}` : null;
+  }
+
   private getInstructionsWebLink(deeplink: string): string {
     const params = this.getParams(deeplink);
     const request_id = !!params && !!params[0] ? params[0].split('=').pop() : null;
@@ -175,19 +159,20 @@ export class DeeplinkService {
       return of(null);
     }
 
-    return new Observable((subscriber: Subscriber<string>) => {
-      this.itemService.get(itemId).subscribe({
-        next: (item: Item) => {
-          subscriber.next(!!item.webSlug ? this.itemDetailRoutePipe.transform(item.webSlug) : null);
-        },
-        error: (error: HttpErrorResponse) => {
-          subscriber.next(null);
-        },
-        complete: () => {
-          subscriber.complete();
-        },
-      });
-    });
+    return this.itemService.get(itemId).pipe(
+      map((item: Item) => (!!item.webSlug ? this.itemDetailRoutePipe.transform(item.webSlug) : null)),
+      catchError(() => of(null))
+    );
+  }
+
+  //TODO: When removing the feature flag from the payview, we can generate the payview link without an observable
+  private getPayviewWebLink(deeplink: string): Observable<string> {
+    const params: string[] = this.getParams(deeplink);
+    const itemHash: string = params[0].split('=')[1];
+    return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
+      map((enabled) => (enabled ? `${PATH_TO_PAYVIEW}/${itemHash}` : '')),
+      take(1)
+    );
   }
 
   private getParams(deeplink: string): string[] {
@@ -206,19 +191,10 @@ export class DeeplinkService {
       return of(null);
     }
 
-    return new Observable((observer: Subscriber<string>) => {
-      this.userService.get(userId, false).subscribe({
-        next: (user: User) => {
-          observer.next(!!user.webSlug ? this.userProfileRoutePipe.transform(user.webSlug, userId) : null);
-        },
-        error: (error: HttpErrorResponse) => {
-          observer.next(null);
-        },
-        complete: () => {
-          observer.complete();
-        },
-      });
-    });
+    return this.userService.get(userId, false).pipe(
+      map((user: User) => (!!user.webSlug ? this.userProfileRoutePipe.transform(user.webSlug, userId) : null)),
+      catchError(() => of(null))
+    );
   }
 
   private getZendeskArticleWebLink(deeplink: string): string {
@@ -233,23 +209,9 @@ export class DeeplinkService {
     return !!formId ? getTicketFormUrl(formId as unknown as EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID, HELP_LOCALE) : null;
   }
 
-  private isExternalNavigation(deeplink: string): boolean {
-    const deeplinks: Record<deeplinkType, boolean> = {
-      barcodeLabel: false,
-      instructions: false,
-      item: true,
-      printableLabel: true,
-      unknown: false,
-      userProfile: false,
-      zendeskArticle: true,
-      zendeskForm: true,
-    };
-    return deeplinks[this.getDeeplinkType(deeplink)];
-  }
-
   private navigateToRoute(deeplink: string): void {
     this.toWebLink(deeplink).subscribe((webLink: string) => {
-      this.router.navigate([webLink]);
+      webLink !== '' && this.router.navigate([webLink]);
     });
   }
 

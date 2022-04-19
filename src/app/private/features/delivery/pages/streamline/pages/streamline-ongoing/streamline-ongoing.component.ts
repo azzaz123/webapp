@@ -13,6 +13,8 @@ import { catchError } from 'rxjs/operators';
 import { Request } from '@api/core/model/delivery';
 import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
 import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -26,6 +28,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
   constructor(
     private streamlineOngoingUIService: StreamlineOngoingUIService,
+    private continueDeliveryPaymentService: ContinueDeliveryPaymentService,
     private router: Router,
     private errorActionService: SharedErrorActionService
   ) {}
@@ -53,14 +56,20 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
   public onItemClick(historicElement: HistoricElement<DeliveryPendingTransaction | Request>): void {
     const isPendingTransaction: boolean = this.isPendingTransaction(historicElement);
-    const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
+    const isRequest: boolean = !isPendingTransaction;
+    const isCurrentUserTheSeller = historicElement.payload.isCurrentUserTheSeller;
     const requestId: string = historicElement.id;
 
-    if (isRequestAndSeller) {
-      this.redirectToAcceptScreen(requestId);
-    } else {
-      this.redirectToTTS(requestId);
+    if (isRequest) {
+      isCurrentUserTheSeller
+        ? this.redirectToAcceptScreen(requestId)
+        : this.continueDeliveryPaymentService
+            .continue(requestId, historicElement.payload.item.id, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
+            .subscribe();
+      return;
     }
+
+    this.redirectToTTS(requestId);
   }
 
   private redirectToTTS(requestId: string): void {

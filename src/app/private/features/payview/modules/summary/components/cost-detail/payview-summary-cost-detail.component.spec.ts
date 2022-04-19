@@ -11,6 +11,7 @@ import { PayviewSummaryCostDetailComponent } from '@private/features/payview/mod
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 describe('PayviewSummaryCostDetailComponent', () => {
+  const MOCK_PROMOTION_NAME: string = 'Laia!!';
   const fakeProductName: string = 'This is a product name';
   const payviewSummaryCostDetailSelector: string = '.PayviewSummaryCostDetail';
   const payviewSummaryCostDetailInsuranceBadgeSelector: string = `${payviewSummaryCostDetailSelector}__insuranceBadge`;
@@ -219,7 +220,27 @@ describe('PayviewSummaryCostDetailComponent', () => {
           expect(target.innerHTML).toContain(`${expected.toString()}`);
         });
 
+        describe('WHEN the promotion has a promotion name', () => {
+          beforeEach(() => {
+            component.costs.promotion.promotionName = MOCK_PROMOTION_NAME;
+
+            changeDetectorRef.detectChanges();
+          });
+
+          it('should show the promotion name', () => {
+            const target = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector)).nativeElement;
+
+            expect(target.innerHTML).toBe(MOCK_PROMOTION_NAME);
+          });
+        });
+
         describe('WHEN the discount is a percentage', () => {
+          beforeEach(() => {
+            component.costs.promotion.promotionName = null;
+
+            changeDetectorRef.detectChanges();
+          });
+
           it('should show the shipping badge', () => {
             const expected = component.costs.promotion.deliveryCostDiscountPercentage;
             const target: HTMLSpanElement = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector)).nativeElement;
@@ -253,15 +274,35 @@ describe('PayviewSummaryCostDetailComponent', () => {
       component.productName = fakeProductName;
       component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
       component.costs.promotion.feesFixedPrice.amount.total = 0;
-
-      changeDetectorRef.detectChanges();
     });
 
-    it('should show the message "free"', () => {
-      const expected = $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`;
-      const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceBadgeSelector)).nativeElement;
+    describe('and there is a promotion name', () => {
+      beforeEach(() => {
+        component.costs.promotion.promotionName = MOCK_PROMOTION_NAME;
 
-      expect(target.innerHTML).toBe(expected);
+        changeDetectorRef.detectChanges();
+      });
+
+      it('should show the promotion name"', () => {
+        const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceBadgeSelector)).nativeElement;
+
+        expect(target.innerHTML).toBe(MOCK_PROMOTION_NAME);
+      });
+    });
+
+    describe('and there is no promotion name', () => {
+      beforeEach(() => {
+        component.costs.promotion.promotionName = null;
+
+        changeDetectorRef.detectChanges();
+      });
+
+      it('should show the message "free"', () => {
+        const expected = $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`;
+        const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceBadgeSelector)).nativeElement;
+
+        expect(target.innerHTML).toBe(expected);
+      });
     });
   });
 

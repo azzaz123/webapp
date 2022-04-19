@@ -25,16 +25,22 @@ describe('SearchInputComponent', () => {
   });
 
   it('should stream the term', fakeAsync(() => {
-    const TEXT = 'hola';
+    const expectedText = 'hola';
+    const input = {
+      target: {
+        value: 'hola',
+      },
+    };
+
     let term: string;
     component.term$.subscribe((t) => {
       term = t;
     });
 
-    component.search(TEXT);
+    component.search(input as unknown as Event);
     tick(400);
 
-    expect(term).toBe(TEXT);
+    expect(term).toBe(expectedText);
   }));
 
   describe('closeSearch', () => {

@@ -3,13 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService } from '@core/user/user.service';
 import { AdsTargetingsService } from './ads-targetings.service';
-import { MockUserService } from '@fixtures/user.fixtures.spec';
+import { MockUserService, USER_BIRTH_DATE } from '@fixtures/user.fixtures.spec';
 import { YieldBirdService } from '@core/ads/vendors/yieldbird/yieldbird.service';
 import { MockYieldBirdService } from '@fixtures/ads.fixtures.spec';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
+import * as moment from 'moment';
 
 describe('AdsTargetingsService', () => {
   let service: AdsTargetingsService;
@@ -27,7 +28,7 @@ describe('AdsTargetingsService', () => {
     maxprice: '400',
     gender: 'male',
     userId: 'abcd-1234',
-    age: '3',
+    age: moment().diff(USER_BIRTH_DATE, 'years').toString(),
     latitude: '41.399132621722174',
     longitude: '2.17585484411869',
     yb_ab: 'test',

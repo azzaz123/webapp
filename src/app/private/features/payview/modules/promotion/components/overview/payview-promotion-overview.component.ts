@@ -19,7 +19,7 @@ export class PayviewPromotionOverviewComponent {
   }
 
   public get isValidPromocode(): boolean {
-    return !!this.costs.promotion;
+    return !!this.costs.promotion && !this.costs.promotion.promotionName;
   }
 
   public get promocode(): string {

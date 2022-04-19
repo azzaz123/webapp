@@ -1,23 +1,18 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { UserService } from '@core/user/user.service';
-import { MockedUserService, USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_FULL_USER, USER_ID } from '@fixtures/user.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { OptimizelyService } from './optimizely.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { environment } from '@environments/environment';
 import { BASE_USER_ATTRIBUTES } from './resources/user-attributes.constants';
-import { OPTIMIZELY_FLAG_KEYS } from './resources/optimizely-flag-keys';
-import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
+import { OPTIMIZELY_EXPERIMENT_KEYS } from './resources/optimizely-experiment-keys';
 
 const OptimizelySdk = require('@optimizely/optimizely-sdk');
 
 jest.mock('@optimizely/optimizely-sdk', () => ({
   createInstance: () => ClientInstance,
-  enums: {
-    NOTIFICATION_TYPES: {
-      DECISION: 'DECISION:type, userId, attributes, decisionInfo',
-    },
-  },
+  OptimizelyDecideOption: { DISABLE_DECISION_EVENT: 'DISABLE_DECISION_EVENT' },
 }));
 
 const ClientInstance = {
@@ -26,11 +21,13 @@ const ClientInstance = {
     addNotificationListener: () => {},
   },
   createUserContext: () => UserContext,
+  getOptimizelyConfig: () => ({ getDatafile: () => '{}' }),
 };
 
 let userAttributes: { [key: string]: string } = BASE_USER_ATTRIBUTES;
 
 const UserContext = {
+  decide: () => ({ ruleKey: 'exp_innovation_test', variationKey: 'variant_a' }),
   decideForKeys: () => {},
   getAttributes: () => userAttributes,
   setAttribute: (key, value) => {
@@ -65,10 +62,6 @@ describe('Optimizely service', () => {
     analyticsService = TestBed.inject(AnalyticsService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('when initializing', () => {
     it('should create instance', fakeAsync(() => {
       spyOn(OptimizelySdk, 'createInstance').and.callThrough();
@@ -80,72 +73,58 @@ describe('Optimizely service', () => {
       service.isReady$.subscribe((ready) => expect(ready).toBeTruthy());
     }));
 
-    it('should add the notification listener', fakeAsync(() => {
-      spyOn(ClientInstance.notificationCenter, 'addNotificationListener');
+    it('should create a user context', fakeAsync(() => {
+      spyOn(ClientInstance, 'createUserContext').and.callThrough();
 
       service.initialize();
       tick();
 
-      expect(ClientInstance.notificationCenter.addNotificationListener).toHaveBeenCalled();
+      expect(ClientInstance.createUserContext).toHaveBeenCalledWith(USER_ID, { ...BASE_USER_ATTRIBUTES });
+    }));
+
+    it('should set experiment values to mParticle user attributes once mParticle is initialized', fakeAsync(() => {
+      spyOn(UserContext, 'decide').and.callThrough();
+      spyOn(analyticsService, 'setUserAttribute').and.callThrough();
+
+      service.initialize();
+      analyticsService.initializeAnalyticsWithAuthenticatedUser(MOCK_FULL_USER);
+      tick();
+
+      expect(UserContext.decide).toHaveBeenCalledTimes(Object.keys(OPTIMIZELY_EXPERIMENT_KEYS).length);
+      expect(analyticsService.setUserAttribute).toHaveBeenCalledWith('exp_innovation_test', 'variant_a');
     }));
   });
 
-  describe('when initializing experiment context', () => {
-    let createUserContextSpy: jasmine.Spy;
-
+  describe('when setting optimizely attributes', () => {
     beforeEach(fakeAsync(() => {
-      createUserContextSpy = spyOn(ClientInstance, 'createUserContext').and.callThrough();
       service.initialize();
       tick();
     }));
 
-    describe('and there is none created before', () => {
-      it('should create new user context', () => {
-        const attributes = { app: 'wallapop' };
-
-        service.initExperimentContext(attributes);
-
-        expect(createUserContextSpy).toHaveBeenCalledWith(USER_ID, { ...attributes, ...BASE_USER_ATTRIBUTES });
-      });
+    afterEach(() => {
+      //CLEAN user context attributes and leave the default ones
+      userAttributes = BASE_USER_ATTRIBUTES;
     });
 
-    describe('and there is one already created', () => {
-      beforeEach(() => {
-        service.initExperimentContext({});
-      });
+    it('should update attributes if there are new, and keep the original ones', () => {
+      spyOn(UserContext, 'setAttribute').and.callThrough();
+      const newAttributes = { test: 'some new attributes' };
+      const expectedUserAttributes = { ...newAttributes, ...userAttributes };
 
-      afterEach(() => {
-        //CLEAN user context attributes and leave the default ones
-        userAttributes = BASE_USER_ATTRIBUTES;
-      });
+      service.setNewOptimizelyUserAttributes(newAttributes);
 
-      it('should not create a new user context', () => {
-        service.initExperimentContext({});
+      expect(UserContext.setAttribute).toHaveBeenCalledWith('test', 'some new attributes');
+      expect(userAttributes).toEqual(expectedUserAttributes);
+    });
 
-        expect(createUserContextSpy).toHaveBeenCalledTimes(1);
-      });
+    it('should keep the value of the original attribute if it is already set', () => {
+      spyOn(UserContext, 'setAttribute').and.callThrough();
+      userAttributes = { time: 'morning', ...BASE_USER_ATTRIBUTES };
+      const newAttribute = { time: 'noon' };
 
-      it('should update attributes if there are new, and keep the original ones', () => {
-        spyOn(UserContext, 'setAttribute').and.callThrough();
-        const newAttributes = { test: 'some new attributes' };
-        const expectedUserAttributes = { ...newAttributes, ...userAttributes };
+      service.setNewOptimizelyUserAttributes(newAttribute);
 
-        service.initExperimentContext(newAttributes);
-
-        expect(UserContext.setAttribute).toHaveBeenCalledWith('test', 'some new attributes');
-        expect(userAttributes).toEqual(expectedUserAttributes);
-      });
-
-      it('should keep the value of the original attribute if it is already set', () => {
-        spyOn(UserContext, 'setAttribute').and.callThrough();
-        userAttributes = { ...{ time: 'morning' }, ...BASE_USER_ATTRIBUTES };
-        const newAttribute = { time: 'noon' };
-
-        service.initExperimentContext(newAttribute);
-
-        expect(UserContext.setAttribute).not.toHaveBeenCalled();
-        expect(userAttributes.time).toEqual('morning');
-      });
+      expect(UserContext.setAttribute).not.toHaveBeenCalled();
     });
   });
 
@@ -155,23 +134,9 @@ describe('Optimizely service', () => {
 
       service.initialize();
       tick();
-      service.initExperimentContext({});
-      service.getVariations({ flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest] });
+      service.getVariations({ flagKeys: [OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest] });
 
       expect(UserContext.decideForKeys).toHaveBeenCalled();
-    }));
-  });
-
-  describe('when tracking an event', () => {
-    it('should fire a track event', fakeAsync(() => {
-      spyOn(UserContext, 'trackEvent');
-
-      service.initialize();
-      tick();
-      service.initExperimentContext({});
-      service.track({ eventKey: ANALYTICS_EVENT_NAMES.ClickItemCard });
-
-      expect(UserContext.trackEvent).toHaveBeenCalled();
     }));
   });
 });

@@ -1,10 +1,10 @@
 <div class="item" [ngClass]="{'active': opened}">
   <div class="row" (click)="changeExpandedState()">
     <div class="col-6 col-item-title">
-      <a 
+      <a
       tslItemRoute
       [itemSlug]="item.webSlug"
-      [itemUUID]="item.id" class="image"><tsl-item-avatar [item]="item" size="medium" fallbackLight="true"></tsl-item-avatar></a>
+      [itemUUID]="item.id" class="image"><tsl-item-avatar [item]="item" [size]="'medium'" [fallbackLight]="true"></tsl-item-avatar></a>
       <div class="price">{{item.salePrice | customCurrency}}</div>
       <div class="title">{{item.title}}</div>
     </div>
