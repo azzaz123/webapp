@@ -23,11 +23,5 @@ export class FeatureFlagServiceMock {
   getLocalFlag(_flag: FEATURE_FLAGS_ENUM): Observable<boolean> {
     return of(true);
   }
-  getStoredFlag(_flag: FEATURE_FLAGS_ENUM): FeatureFlag {
-    return {
-      active: true,
-      name: FEATURE_FLAGS_ENUM.DELIVERY,
-    };
-  }
   isExperimentalFeaturesEnabled() {}
 }
