@@ -32,9 +32,10 @@
   </div>
   <div
     *ngIf="isPayviewLoading$ | async; else stepper"
-    class="PayviewModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
+    class="PayviewModal__spinner w-100 h-100 d-flex flex-column justify-content-center align-content-center align-items-center"
   >
     <tsl-svg-icon width="45" height="45" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+    <span *ngIf="isPayLoadingMessage$ | async" i18n="@@waiting_3ds_message" class="mt-4">Connecting with the server…</span>
   </div>
   <ng-template #stepper>
     <tsl-stepper *ngIf="payviewState$ | async as payviewState" class="PayviewModal__stepper pt-1">
