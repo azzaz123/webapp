@@ -21,6 +21,9 @@ export class MockAnalyticsService {
   public get mParticleReady$(): Observable<void> {
     return this._mParticleReady$.asObservable();
   }
+
+  public setUserAttribute(key: string, value: string) {}
+
   initializeAnalyticsWithUnauthenticatedUser(): Promise<void> {
     this._mParticleReady$.next();
     return new Promise((resolve) => resolve());

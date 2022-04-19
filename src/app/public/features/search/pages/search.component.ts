@@ -39,8 +39,8 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
-import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
 import { CATEGORY_CARDS_VISIBILITY_RULES } from '../core/services/constants/category-cards-visibility-rules';
+import { OPTIMIZELY_EXPERIMENT_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-experiment-keys';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -152,9 +152,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       })
     );
 
-    this.experimentationService.initExperimentContext();
     this.experimentationService.getVariations({
-      flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
+      flagKeys: [OPTIMIZELY_EXPERIMENT_KEYS.NewMParticleTest],
     });
   }
 
