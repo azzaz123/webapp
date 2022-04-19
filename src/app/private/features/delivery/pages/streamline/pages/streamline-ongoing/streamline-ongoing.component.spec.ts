@@ -27,7 +27,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
-import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
 import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 const PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;

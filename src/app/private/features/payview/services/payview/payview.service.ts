@@ -29,7 +29,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { catchError, concatMap, filter, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of, throwError } from 'rxjs';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
-import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { UserPaymentPreferencesUnknownError } from '@api/core/errors/delivery/payview/user-payment-preferences';

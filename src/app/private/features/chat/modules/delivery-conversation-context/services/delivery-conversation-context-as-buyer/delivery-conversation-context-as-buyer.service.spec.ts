@@ -33,7 +33,7 @@ import { DeliveryConversationContextAsBuyerService } from './delivery-conversati
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
-import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
 import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 describe('DeliveryConversationContextAsBuyerService', () => {

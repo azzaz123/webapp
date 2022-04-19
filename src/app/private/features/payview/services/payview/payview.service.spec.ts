@@ -46,7 +46,7 @@ import { CardInvalidError } from '@api/core/errors/payments/cards';
 import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
-import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
 import { PaymentsUserPaymentPreferences, PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';

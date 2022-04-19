@@ -16,7 +16,7 @@ import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { of } from 'rxjs';
 
-import { ContinueDeliveryPaymentService } from './continue-delivery-payment';
+import { ContinueDeliveryPaymentService } from './continue-delivery-payment.service';
 import { PAYMENT_CONTINUED_POST_ACTION } from './enums/payment-continued-post-action.enum';
 import { ContinueToPayPalService } from './modules/continue-to-pay-pal/services/continue-to-pay-pal.service';
 import { ContinueWithCreditCardService } from './modules/continue-with-credit-card/services/continue-with-credit-card.service';
