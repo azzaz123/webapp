@@ -24,7 +24,7 @@ export class SearchIdService {
     this.STORAGE_SYSTEM.setItem(this.STORAGE_KEY, JSON.stringify(searchIdRecord));
   }
 
-  public getSearchIdByItemId(itemId): string {
+  public getSearchIdByItemId(itemId): string | null {
     const searchId = this.getSearchIdRecord()[itemId];
 
     if (searchId) {
