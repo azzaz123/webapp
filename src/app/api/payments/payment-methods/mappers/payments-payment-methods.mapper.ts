@@ -43,5 +43,5 @@ export const mapToPaymentsPaymentMethods: ToDomainMapper<PaymentsPaymentMethodDt
     result.push(DEFAULT_PAYMENT_METHOD);
   }
 
-  return result;
+  return result.sort((a, b) => (a.method === PAYVIEW_PAYMENT_METHOD.CREDIT_CARD ? -1 : 1));
 };
