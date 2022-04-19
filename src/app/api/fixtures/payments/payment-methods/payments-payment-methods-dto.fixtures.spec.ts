@@ -11,13 +11,17 @@ export const MOCK_PAYMENTS_PAYMENT_METHODS: PaymentsPaymentMethods = {
 };
 
 export const MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE_WITH_NON_AVAILABLE_METHODS: PaymentsPaymentMethodsDto = {
-  payment_methods: [{ method: 'paypal' }, { method: 'credit card' }],
+  payment_methods: [{ method: 'wallet' }],
 };
 
 export const MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE_WITH_AVAILABLE_METHODS: PaymentsPaymentMethodsDto = {
-  payment_methods: [{ method: 'credit card' }],
+  payment_methods: [{ method: 'credit card' }, { method: 'paypal' }],
 };
 
 export const MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ONLY_CREDIT_CARD: PaymentsPaymentMethods = {
   paymentMethods: [{ method: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD }],
+};
+
+export const MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ALL_PAYMENT_METHODS: PaymentsPaymentMethods = {
+  paymentMethods: [{ method: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD }, { method: PAYVIEW_PAYMENT_METHOD.PAYPAL }],
 };
