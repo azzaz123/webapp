@@ -1,5 +1,5 @@
-/* Wallapop wrapper v1.10 */
-//Bidders: richaudience, appnexus, criteo, ix, smartadserver, rubicon
+/* Wallapop wrapper v1.11 */
+//Bidders: richaudience, appnexus, criteo, ix, smartadserver, rubicon, pubmatic
 
 var raiGptScr = document.createElement("script");
 raiGptScr.id = "gptSrc";
@@ -10,7 +10,7 @@ document.getElementsByTagName("head")[0].appendChild(raiGptScr);
 
 var raiPrebidScr = document.createElement("script");
 raiPrebidScr.id = "prebidScr";
-raiPrebidScr.src = "//bridge.richmediastudio.com/ab083674fb8200b877a6983126e4477d/wallapop/pb_wrapper/dev/prebid.js";
+raiPrebidScr.src = "//cdn3.richaudience.com/ab083674fb8200b877a6983126e4477d/wallapop/pb_wrapper/dev/prebid.js";
 
 document.getElementsByTagName("head")[0].appendChild(raiPrebidScr);
 
@@ -22,6 +22,7 @@ var raiPlacementObj = [
             apnPlacement: '19120843',
             ixPlacement: '556508',
             criPlacement: '6866',
+            pubmatic_publisherId: '161602',
             sizes: [[728, 90], [970, 90], [970, 250], [980, 90], [980, 200], [980, 250]]
         },
         tablet: {
@@ -39,6 +40,7 @@ var raiPlacementObj = [
             apnPlacement: '19120843',
             ixPlacement: '556524',
             criPlacement: '6866',
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [300, 250], [300, 600], [320, 50], [320, 100], [336, 280]]
         }
     },
@@ -55,6 +57,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147914,
+            pubmatic_publisherId: '161602',
             sizes: [[728, 90], [970, 90], [970, 250], [980, 90], [980, 200], [980, 250]]
         },
         tablet: {
@@ -84,6 +87,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147914,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [320, 50], [320, 100]]
         }
     },
@@ -220,6 +224,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147916,
+            pubmatic_publisherId: '161602',
             sizes: [[728, 90], [970, 90], [970, 250], [980, 90], [980, 200], [980, 250]]
         },
         tablet: {
@@ -249,6 +254,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147918,
+            pubmatic_publisherId: '161602',
             sizes: [[120, 600], [160, 600], [300, 250], [300, 600], [336, 280], [336, 280]]
         },
         tablet: {
@@ -278,6 +284,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147920,
+            pubmatic_publisherId: '161602',
             sizes: [[120, 600], [160, 600], [300, 250], [300, 600], [336, 280], [336, 280]]
         },
         tablet: {
@@ -307,6 +314,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147922,
+            pubmatic_publisherId: '161602',
             sizes: [[728, 90], [970, 90], [970, 250], [980, 90], [980, 200], [980, 250]]
         },
         tablet: {
@@ -336,6 +344,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147922,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [320, 50], [320, 100], [300, 250]]
         }
     },
@@ -352,6 +361,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147924,
+            pubmatic_publisherId: '161602',
             sizes: [[728, 90], [970, 90], [970, 250], [980, 90], [980, 200], [980, 250]]
         },
         tablet: {
@@ -381,6 +391,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147924,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [320, 50], [320, 100], [320, 250]]
         }
     },
@@ -397,6 +408,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147926,
+            pubmatic_publisherId: '161602',
             sizes: [[120, 600], [160, 600], [300, 250], [300, 600], [336, 280]]
         }
     },
@@ -413,6 +425,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147926,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [320, 50], [320, 100], [300, 250], [336, 280]]
         }
     },
@@ -429,6 +442,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147928,
+            pubmatic_publisherId: '161602',
             sizes: [[120, 600], [160, 600], [300, 250], [300, 600], [336, 280]]
         }
     },
@@ -445,6 +459,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147928,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [320, 50], [320, 100], [300, 250], [336, 280], [300, 600]]
         }
     },
@@ -455,6 +470,7 @@ var raiPlacementObj = [
             apnPlacement: '20792658',
             ixPlacement: '611976',
             criPlacement: '6866',
+            pubmatic_publisherId: '161602',
             sizes: [[120, 600], [300, 250], [336, 280], [160, 600], [300, 600], [240, 400]]
         },
         tablet: {
@@ -485,6 +501,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147932,
+            pubmatic_publisherId: '161602',
             sizes: [[120, 600], [160, 600], [300, 250], [300, 600], [336, 280]]
         },
         tablet : {
@@ -507,6 +524,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147932,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [320, 50], [320, 100], [300, 250], [336, 280], [300, 600]]
         }
     },
@@ -523,6 +541,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147934,
+            pubmatic_publisherId: '161602',
             sizes: [[120, 600], [160, 600], [300, 250], [300, 600], [336, 280]]
         },
         tablet : {
@@ -545,6 +564,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147934,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [320, 50], [320, 100], [300, 250], [336, 280]]
         }
     },
@@ -561,6 +581,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147930,
+            pubmatic_publisherId: '161602',
             sizes: [[728, 90], [728, 250], [970, 90], [970, 250], [980, 90], [980, 200], [980, 250], [336, 280], [320, 250]]
         },
         tablet: {
@@ -633,6 +654,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147916,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [300, 250], [320, 50], [320, 100], [336, 280]]
         }
     },
@@ -649,6 +671,7 @@ var raiPlacementObj = [
             rubAccount: 17562,
             rubSite: 385672,
             rubZone: 2147918,
+            pubmatic_publisherId: '161602',
             sizes: [[300, 50], [300, 100], [300, 250], [320, 50], [320, 100], [336, 280], [300, 600]]
         }
     }
@@ -832,6 +855,12 @@ fetchHeaderBids = function (allowSegmentation, adSlots, definedSlots) {
                                     siteId: raiPlacement[deviceType].rubSite,
                                     zoneId: raiPlacement[deviceType].rubZone
                                 }
+                            },
+                            {
+                                bidder: 'pubmatic',
+                                params: {
+                                    publisherId: raiPlacement[deviceType].pubmatic_publisherId,
+                                }
                             }
                         ]
                     }
@@ -861,7 +890,20 @@ fetchHeaderBids = function (allowSegmentation, adSlots, definedSlots) {
                     },
                     userSync: {
                         iframeEnabled: true,
-                        syncsPerBidder: 5
+                        syncsPerBidder: 5,
+                        userIds: [{
+                            name: 'id5Id',
+                            params: {
+                                partner: 1011,
+                            },
+                            storage: {
+                                type: 'html5',
+                                name: 'id5id',
+                                expires: 90,
+                                refreshInSeconds: 8*3600
+                            }
+                        }],
+                        auctionDelay: 50
                     },
                     enableSendAllBids: false,
                     priceGranularity: "dense"
