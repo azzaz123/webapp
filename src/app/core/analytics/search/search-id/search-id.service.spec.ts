@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { LOCAL_STORAGE_TOKEN } from '@core/local-storage/local-storage.token';
 import { SearchIdRecord } from './interfaces/search-id-record.interface';
 import { SearchIdService } from './search-id.service';
 
 describe('SearchIdService', () => {
   let service: SearchIdService;
-
+  let storageMock = global.localStorage;
   const existingItemId = 'item1';
   const randomItemId = 'item0';
 
@@ -17,7 +18,13 @@ describe('SearchIdService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SearchIdService],
+      providers: [
+        SearchIdService,
+        {
+          provide: LOCAL_STORAGE_TOKEN,
+          useValue: storageMock,
+        },
+      ],
     });
 
     service = TestBed.inject(SearchIdService);
@@ -26,7 +33,7 @@ describe('SearchIdService', () => {
   describe('when asking for searchId', () => {
     describe('and no searchIds are stored', () => {
       beforeEach(() => {
-        global.localStorage.removeItem(service['STORAGE_KEY']);
+        storageMock.removeItem(service['STORAGE_KEY']);
       });
 
       it('should return no searchId', () => {
@@ -36,7 +43,7 @@ describe('SearchIdService', () => {
 
     describe('and searchIds are stored', () => {
       beforeEach(() => {
-        global.localStorage.setItem(service['STORAGE_KEY'], JSON.stringify(SEARCH_ID_RECORD_MOCK));
+        storageMock.setItem(service['STORAGE_KEY'], JSON.stringify(SEARCH_ID_RECORD_MOCK));
       });
 
       it('should return searchId', () => {
@@ -56,7 +63,7 @@ describe('SearchIdService', () => {
 
         beforeEach(() => {
           EXPIRED_SEARCH_ID_RECORD_MOCK[existingItemId].creation = expiredTime.getTime();
-          global.localStorage.setItem(service['STORAGE_KEY'], JSON.stringify(EXPIRED_SEARCH_ID_RECORD_MOCK));
+          storageMock.setItem(service['STORAGE_KEY'], JSON.stringify(EXPIRED_SEARCH_ID_RECORD_MOCK));
         });
 
         it('should return no searchId', () => {
@@ -66,7 +73,7 @@ describe('SearchIdService', () => {
 
       describe('but stored value is not able to be parsed as JSON', () => {
         beforeEach(() => {
-          global.localStorage.setItem(service['STORAGE_KEY'], JSON.stringify('randomString'));
+          storageMock.setItem(service['STORAGE_KEY'], JSON.stringify('randomString'));
         });
 
         it('should return no searchId', () => {
