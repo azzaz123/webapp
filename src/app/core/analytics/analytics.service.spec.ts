@@ -84,7 +84,7 @@ describe('AnalyticsService', () => {
 
       service.initializeAnalyticsWithUnauthenticatedUser();
 
-      expect(user.setUserAttribute).toHaveBeenCalledWith('deviceType', DeviceType.MOBILE);
+      expect(user.setUserAttribute).toHaveBeenCalledWith('webDeviceType', DeviceType.MOBILE);
     });
 
     describe('when there is a device identifier in cookies', () => {
