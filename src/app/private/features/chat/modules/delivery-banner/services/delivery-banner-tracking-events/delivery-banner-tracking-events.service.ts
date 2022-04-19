@@ -9,16 +9,20 @@ import {
   SaveItemPrice,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 
 @Injectable()
 export class DeliveryBannerTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private searchIdService: SearchIdService) {}
 
   public trackClickBannerBuy(attributes: ClickBuy): void {
     const event: AnalyticsEvent<ClickBuy> = {
       name: ANALYTICS_EVENT_NAMES.ClickBuy,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes,
+      attributes: {
+        ...attributes,
+        searchId: this.searchIdService.getSearchIdByItemId(attributes.itemId),
+      },
     };
 
     this.analyticsService.trackEvent(event);

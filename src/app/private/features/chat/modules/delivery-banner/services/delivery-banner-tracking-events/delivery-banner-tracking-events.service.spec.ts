@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MOCK_TRACK_CLICK_ACTIVATE_SHIPPING_ATTRIBUTES,
@@ -14,6 +15,7 @@ import { DeliveryBannerTrackingEventsService } from './delivery-banner-tracking-
 describe('DeliveryBannerTrackingEventsService', () => {
   let service: DeliveryBannerTrackingEventsService;
   let analyticsService: AnalyticsService;
+  let searchIdService: SearchIdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -23,10 +25,12 @@ describe('DeliveryBannerTrackingEventsService', () => {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
         },
+        SearchIdService,
       ],
     });
     service = TestBed.inject(DeliveryBannerTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
+    searchIdService = TestBed.inject(SearchIdService);
   });
 
   it('should be created', () => {
@@ -36,14 +40,19 @@ describe('DeliveryBannerTrackingEventsService', () => {
   describe('when asking to track click banner buy', () => {
     it('should track the action', () => {
       spyOn(analyticsService, 'trackEvent');
+      spyOn(searchIdService, 'getSearchIdByItemId');
 
       service.trackClickBannerBuy(MOCK_TRACK_CLICK_BANNER_BUY_ATTRIBUTES);
 
+      expect(searchIdService.getSearchIdByItemId).toHaveBeenCalledWith(MOCK_TRACK_CLICK_BANNER_BUY_ATTRIBUTES.itemId);
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickBuy,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: MOCK_TRACK_CLICK_BANNER_BUY_ATTRIBUTES,
+        attributes: {
+          ...MOCK_TRACK_CLICK_BANNER_BUY_ATTRIBUTES,
+          searchId: searchIdService.getSearchIdByItemId(MOCK_TRACK_CLICK_BANNER_BUY_ATTRIBUTES.itemId),
+        },
       });
     });
   });
