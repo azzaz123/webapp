@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 export class SearchListTrackingEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService, private searchIdService: SearchIdService) {}
 
-  public async trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string): Promise<void> {
+  public async trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string | null): Promise<void> {
     let isFeatured: boolean = null;
     let isCarDealer: boolean = null;
 
@@ -111,7 +111,7 @@ export class SearchListTrackingEventsService {
     });
   }
 
-  private updateSearchIdByItemId(itemId: string, searchId: string): void {
+  private updateSearchIdByItemId(itemId: string, searchId: string | null): void {
     searchId ? this.searchIdService.setSearchIdByItemId(itemId, searchId) : this.searchIdService.deleteSearchIdByItemId(itemId);
   }
 }
