@@ -695,6 +695,27 @@ describe('SearchComponent', () => {
         it('should clean searchId', () => {
           expect(component['searchId']).toBeNull();
         });
+
+        describe('and a click item card is performed', () => {
+          it('should send track click item card event with no searchId', () => {
+            spyOn(searchListTrackingEventsService, 'trackClickItemCardEvent');
+
+            component.trackClickItemCardEvent({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+
+            expect(searchListTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, null);
+          });
+        });
+
+        describe('and a favourite item is performed', () => {
+          it('should send favourite item event with no searchId', () => {
+            spyOn(searchListTrackingEventsService, 'trackFavouriteItemEvent');
+            const favItem = { ...MOCK_ITEM_CARD, flags: { ...MOCK_ITEM_CARD.flags, favorite: true } };
+
+            component.trackFavouriteToggleEvent(favItem);
+
+            expect(searchListTrackingEventsService.trackFavouriteItemEvent).toHaveBeenCalledWith(favItem, null);
+          });
+        });
       });
     });
 
