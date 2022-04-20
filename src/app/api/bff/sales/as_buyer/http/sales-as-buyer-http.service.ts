@@ -5,10 +5,10 @@ import { SalesAsBuyerDto } from '../dtos/sales-as-buyer-dto.interface';
 import { SALES_AS_BUYER_ENDPOINT } from './endpoint';
 
 @Injectable()
-export class SalesHttpService {
+export class SalesAsBuyerHttpService {
   constructor(private http: HttpClient) {}
 
-  public getAsBuyer(params: HttpParams): Observable<SalesAsBuyerDto> {
+  public get(params: HttpParams): Observable<SalesAsBuyerDto> {
     return this.http.get<SalesAsBuyerDto>(SALES_AS_BUYER_ENDPOINT, { params });
   }
 }

@@ -1,23 +1,23 @@
 import { SALES_AS_BUYER_ENDPOINT } from './endpoint';
 import { TestBed } from '@angular/core/testing';
 
-import { SalesHttpService } from './sales-http.service';
+import { SalesAsBuyerHttpService } from './sales-as-buyer-http.service';
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { HttpParams } from '@angular/common/http';
 import { SalesAsBuyerDto } from '../dtos/sales-as-buyer-dto.interface';
 import { MOCK_SALES_AS_BUYER_DTO } from '@api/fixtures/bff/sales/sales-as-buyer.fixtures.spec';
 
-describe('SalesHttpService', () => {
-  let service: SalesHttpService;
+describe('SalesAsBuyerHttpService', () => {
+  let service: SalesAsBuyerHttpService;
   let httpMock: HttpTestingController;
   let queryParams: HttpParams;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SalesHttpService],
+      providers: [SalesAsBuyerHttpService],
     });
-    service = TestBed.inject(SalesHttpService);
+    service = TestBed.inject(SalesAsBuyerHttpService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -43,7 +43,7 @@ describe('SalesHttpService', () => {
         let response: SalesAsBuyerDto;
         const expectedUrl: string = `${SALES_AS_BUYER_ENDPOINT}?page=${page}`;
 
-        service.getAsBuyer(queryParams).subscribe((data) => (response = data));
+        service.get(queryParams).subscribe((data) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush(MOCK_SALES_AS_BUYER_DTO);
 

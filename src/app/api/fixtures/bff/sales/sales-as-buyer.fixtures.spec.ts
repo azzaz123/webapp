@@ -1,4 +1,4 @@
-import { SalesAsBuyerDto } from '@api/bff/sales/dtos/sales-as-buyer-dto.interface';
+import { SalesAsBuyerDto } from '@api/bff/sales/as_buyer/dtos/sales-as-buyer-dto.interface';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 
