@@ -172,7 +172,7 @@ describe('DeliveryComponent', () => {
     });
   });
 
-  describe('when the user has not previously viewed the TRX Awareness Modal', () => {
+  describe('when the user has not previously viewed the TRX Awareness Modal and the feature flag is NOT enabled', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(false);
 

@@ -14,7 +14,6 @@ const defaultStatusMapper = (isFlagActive: boolean) => isFlagActive;
 const invertedStatusMapper = (isFlagActive: boolean) => !isFlagActive;
 
 export enum FEATURE_FLAGS_ENUM {
-  DELIVERY = 'web_delivery',
   STRIPE = 'web_stripe',
   BUMPS = 'EnableVisibility',
   SUBSCRIPTIONS = 'EnablePros',
