@@ -1,4 +1,4 @@
-export const RICH_AUDIENCE_URL = '/assets/js/rich-audience-prebid-wrapper_lib_1.10.js';
+export const RICH_AUDIENCE_URL = '/assets/js/rich-audience-prebid-wrapper_lib_1.11.js';
 
 export const CRITEO_URL = 'https://static.criteo.net/js/ld/publishertag.js';
 

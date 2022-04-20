@@ -8,6 +8,7 @@ import { MARKET_PROVIDER } from '@configs/market.config';
 import { LOCALE_ID } from '@angular/core';
 import { APP_LOCALE_MOCK, MARKET_MOCK } from '@fixtures/analytics.fixtures.spec';
 import { mParticle } from '@core/analytics/mparticle.constants';
+import { DeviceType } from '@core/device/deviceType.enum';
 
 const user = {
   setUserAttribute: () => {},
@@ -57,6 +58,7 @@ describe('AnalyticsService', () => {
           provide: DeviceService,
           useValue: {
             getDeviceId: () => {},
+            getDeviceType: () => {},
           },
         },
         {
@@ -76,7 +78,16 @@ describe('AnalyticsService', () => {
   });
 
   describe('initialize', () => {
-    describe('when there is an identifier in cookies', () => {
+    it('should send the device type', () => {
+      spyOn(user, 'setUserAttribute');
+      spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
+
+      service.initializeAnalyticsWithUnauthenticatedUser();
+
+      expect(user.setUserAttribute).toHaveBeenCalledWith('webDeviceType', DeviceType.MOBILE);
+    });
+
+    describe('when there is a device identifier in cookies', () => {
       it('should initialize the analytics library with existing identifier', () => {
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(user, 'setUserAttribute');
@@ -89,7 +100,7 @@ describe('AnalyticsService', () => {
       });
     });
 
-    describe('when there is no identifier in cookies', () => {
+    describe('when there is no device identifier in cookies', () => {
       it('should initialize the analytics library ', () => {
         deviceIdValue = undefined;
         spyOn(mParticle, 'init').and.callThrough();

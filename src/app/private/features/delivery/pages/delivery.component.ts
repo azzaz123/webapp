@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DELIVERY_EXPERIMENTAL_FEATURES_KEY } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Subscription } from 'rxjs';
@@ -79,7 +80,7 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   }
 
   private get shouldShowTRXAwarenessModal(): boolean {
-    return !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS);
+    return !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS) && !localStorage.getItem(DELIVERY_EXPERIMENTAL_FEATURES_KEY);
   }
 
   private selectNavLink(routeURL: string): void {

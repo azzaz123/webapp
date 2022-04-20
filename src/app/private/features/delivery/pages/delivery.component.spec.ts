@@ -57,6 +57,12 @@ describe('DeliveryComponent', () => {
           },
         },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
+        {
+          provide: localStorage,
+          useValue: {
+            getItem: () => {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -172,21 +178,43 @@ describe('DeliveryComponent', () => {
     });
   });
 
-  describe('when the user has not previously viewed the TRX Awareness Modal', () => {
+  describe('when the user has not previously viewed the TRX Awareness Modal and the feature flag is NOT enabled', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(false);
-
-      fixture.detectChanges();
     });
 
-    it('should open the TRX Awareness Modal', () => {
-      expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+    describe('and the feature flag is enabled', () => {
+      beforeEach(() => {
+        spyOn(localStorage, 'getItem').and.returnValue(true);
+
+        fixture.detectChanges();
+      });
+
+      it('should NOT open the TRX Awareness Modal', () => {
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+
+      it('should NOT save the user view in the local store', () => {
+        expect(userService.saveLocalStore).not.toHaveBeenCalled();
+      });
     });
 
-    it('should save the user view in the local store', () => {
-      expect(userService.saveLocalStore).toHaveBeenCalledTimes(1);
-      expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_TRX_AWARENESS, FAKE_DATE_NOW.toString());
+    describe('and the feature flag is NOT enabled', () => {
+      beforeEach(() => {
+        spyOn(localStorage, 'getItem').and.returnValue(false);
+
+        fixture.detectChanges();
+      });
+
+      it('should open the TRX Awareness Modal', () => {
+        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+      });
+
+      it('should save the user view in the local store', () => {
+        expect(userService.saveLocalStore).toHaveBeenCalledTimes(1);
+        expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_TRX_AWARENESS, FAKE_DATE_NOW.toString());
+      });
     });
   });
 
