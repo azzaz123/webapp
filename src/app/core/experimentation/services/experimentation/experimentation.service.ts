@@ -49,29 +49,21 @@ export class ExperimentationService {
     return this.optimizeService.getVariant(id);
   }
 
-  public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } {
-    if (this.userService.isLogged) {
-      return this.optimizelyService.getVariations({ flagKeys, options });
-    }
+  public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } | {} {
+    return this.optimizelyService.getVariations({ flagKeys, options });
   }
 
   public isFlagEnabled(flagKey: OPTIMIZELY_FLAG_KEYS): boolean {
-    if (this.userService.isLogged) {
-      return this.optimizelyService.getVariations({ flagKeys: [flagKey], options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT] })[
-        flagKey
-      ]?.enabled;
-    }
+    return !!this.optimizelyService.getVariations({ flagKeys: [flagKey], options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT] })[
+      flagKey
+    ]?.enabled;
   }
 
-  public getVariationFromFlag(flagKey: OPTIMIZELY_EXPERIMENT_KEYS): string {
-    if (this.userService.isLogged) {
-      return this.optimizelyService.getVariations({ flagKeys: [flagKey] })[flagKey]?.variationKey;
-    }
+  public getVariationFromFlag(flagKey: OPTIMIZELY_EXPERIMENT_KEYS): string | undefined {
+    return this.optimizelyService.getVariations({ flagKeys: [flagKey] })[flagKey]?.variationKey;
   }
 
   public setNewOptimizelyUserAttributes(attributes: { [key: string]: string | number | boolean }): void {
-    if (this.userService.isLogged) {
-      this.optimizelyService.setNewOptimizelyUserAttributes(attributes);
-    }
+    this.optimizelyService.setNewOptimizelyUserAttributes(attributes);
   }
 }

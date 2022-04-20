@@ -43,25 +43,34 @@ export class OptimizelyService {
           // The datafile needs to be set in the window for the integration kit with mParticle to work
           this.window['optimizelyDatafile'] = JSON.parse(this.optimizelyClientInstance.getOptimizelyConfig().getDatafile());
           this.initExperimentContext();
-
-          this._optimizelyReady$.next(true);
-          this._optimizelyReady$.complete();
+        } else {
+          this.window['optimizelyClientInstance'] = {};
+          this.window['optimizelyDatafile'] = {};
         }
+
+        this._optimizelyReady$.next(true);
+        this._optimizelyReady$.complete();
       });
     });
   }
 
-  public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } {
-    return this.optimizelyUserContext.decideForKeys(flagKeys, options);
+  public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } | {} {
+    if (this.optimizelyUserContext) {
+      return this.optimizelyUserContext.decideForKeys(flagKeys, options);
+    } else {
+      return {};
+    }
   }
 
   public setNewOptimizelyUserAttributes(attributesToAdd: { [key: string]: string | number | boolean }) {
-    const currentUserAttributes = this.optimizelyUserContext.getAttributes();
-    const newUserAttributes = Object.keys(attributesToAdd).filter((keyToAdd) => !currentUserAttributes[keyToAdd]);
+    if (this.optimizelyUserContext) {
+      const currentUserAttributes = this.optimizelyUserContext.getAttributes();
+      const newUserAttributes = Object.keys(attributesToAdd).filter((keyToAdd) => !currentUserAttributes[keyToAdd]);
 
-    newUserAttributes.forEach((key) => {
-      this.optimizelyUserContext.setAttribute(key, attributesToAdd[key]);
-    });
+      newUserAttributes.forEach((key) => {
+        this.optimizelyUserContext.setAttribute(key, attributesToAdd[key]);
+      });
+    }
   }
 
   private initExperimentContext(): void {
