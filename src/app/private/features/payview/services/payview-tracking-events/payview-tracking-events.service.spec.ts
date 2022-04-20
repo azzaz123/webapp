@@ -17,18 +17,21 @@ import {
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
 import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
+import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 
 describe('PayviewTrackingEventsService', () => {
   let service: PayviewTrackingEventsService;
   let analyticsService: AnalyticsService;
+  let searchIdService: SearchIdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: AnalyticsService, useClass: MockAnalyticsService }],
+      providers: [{ provide: AnalyticsService, useClass: MockAnalyticsService }, SearchIdService],
     });
     service = TestBed.inject(PayviewTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
+    searchIdService = TestBed.inject(SearchIdService);
   });
 
   it('should be created', () => {
@@ -151,6 +154,8 @@ describe('PayviewTrackingEventsService', () => {
   describe('and we call to track pay transaction event', () => {
     beforeEach(() => {
       spyOn(analyticsService, 'trackEvent');
+      spyOn(searchIdService, 'getSearchIdByItemId');
+      spyOn(searchIdService, 'deleteSearchIdByItemId');
       service.trackPayTransaction(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD);
     });
 
@@ -158,12 +163,23 @@ describe('PayviewTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
     });
 
+    it('should ask for the searchId', () => {
+      expect(searchIdService.getSearchIdByItemId).toHaveBeenCalledWith(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD.itemId);
+    });
+
     it('should track the event with specified properties', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.PayTransaction,
         eventType: ANALYTIC_EVENT_TYPES.Transaction,
-        attributes: MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+        attributes: {
+          ...MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+          searchId: searchIdService.getSearchIdByItemId(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD.itemId),
+        },
       });
+    });
+
+    it('should delete the searchId', () => {
+      expect(searchIdService.deleteSearchIdByItemId).toHaveBeenCalledWith(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD.itemId);
     });
   });
 

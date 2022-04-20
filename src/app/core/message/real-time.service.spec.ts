@@ -28,6 +28,8 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { Message } from './message';
 import { RealTimeService } from './real-time.service';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
+import { ChatTrackingEventsService } from './chat-tracking-events/chat-tracking-events.service';
+import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 
 let service: RealTimeService;
 let eventService: EventService;
@@ -36,6 +38,7 @@ let remoteConsoleService: RemoteConsoleService;
 let analyticsService: AnalyticsService;
 let connectionService: ConnectionService;
 let i18nService: I18nService;
+let chatTrackingEventsService: ChatTrackingEventsService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -49,6 +52,8 @@ describe('RealTimeService', () => {
         { provide: ConnectionService, useClass: MockConnectionService },
         { provide: DeliveryRealTimeService, useValue: {} },
         I18nService,
+        ChatTrackingEventsService,
+        SearchIdService,
       ],
     });
 
@@ -59,6 +64,7 @@ describe('RealTimeService', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     connectionService = TestBed.inject(ConnectionService);
     i18nService = TestBed.inject(I18nService);
+    chatTrackingEventsService = TestBed.inject(ChatTrackingEventsService);
   });
 
   describe('connect', () => {
@@ -292,65 +298,23 @@ describe('RealTimeService', () => {
         inboxConversation.messages.push(inboxMessage);
       });
 
-      it('should send the Send First Message event', () => {
-        const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
-          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            itemId: inboxConversation.item.id,
-            sellerUserId: inboxConversation.user.id,
-            conversationId: inboxConversation.id,
-            screenId: SCREEN_IDS.Chat,
-            categoryId: inboxConversation.item.categoryId,
-            country: analyticsService.market,
-            language: analyticsService.appLocale,
-            shippingAllowed: null,
-          },
-        };
-
-        spyOn(analyticsService, 'trackEvent');
+      it('should ask for first message event tracking', () => {
+        spyOn(chatTrackingEventsService, 'trackSendFirstMessage');
 
         eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-      });
-
-      describe('and has searchId in sessionStorage', () => {
-        it('should send the Send First Message event with searchId', () => {
-          const searchId = '123456789';
-          const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
-            name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              itemId: inboxConversation.item.id,
-              sellerUserId: inboxConversation.user.id,
-              conversationId: inboxConversation.id,
-              screenId: SCREEN_IDS.Chat,
-              categoryId: inboxConversation.item.categoryId,
-              searchId,
-              country: analyticsService.market,
-              language: analyticsService.appLocale,
-              shippingAllowed: null,
-            },
-          };
-          spyOn(sessionStorage, 'getItem').and.returnValue(searchId);
-          spyOn(analyticsService, 'trackEvent');
-
-          eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
-
-          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-        });
+        expect(chatTrackingEventsService.trackSendFirstMessage).toHaveBeenCalledWith(inboxConversation);
       });
     });
 
     describe('if it`s not the first message', () => {
-      it('should not send the Send First Message event', () => {
+      it('should not ask for first message event tracking', () => {
         MOCKED_CONVERSATIONS[0].messages = [MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION];
-        spyOn(analyticsService, 'trackEvent');
+        spyOn(chatTrackingEventsService, 'trackSendFirstMessage');
 
         eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
-        expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+        expect(chatTrackingEventsService.trackSendFirstMessage).not.toHaveBeenCalled();
       });
     });
   });
@@ -375,22 +339,8 @@ describe('RealTimeService', () => {
     describe('when the conversation has no messages', () => {
       beforeEach(() => (inboxConversation.messages = []));
 
-      it('should track first message event to analytics', () => {
-        spyOn(analyticsService, 'trackEvent');
-        const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
-          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            itemId: inboxConversation.item.id,
-            sellerUserId: inboxConversation.user.id,
-            conversationId: inboxConversation.id,
-            screenId: SCREEN_IDS.Chat,
-            categoryId: inboxConversation.item.categoryId,
-            country: analyticsService.market,
-            language: analyticsService.appLocale,
-            shippingAllowed: null,
-          },
-        };
+      it('should ask for first message event tracking', () => {
+        spyOn(chatTrackingEventsService, 'trackSendFirstMessage');
 
         service.addPhoneNumberMessageToConversation(inboxConversation, phone);
         const inboxMessage = new InboxMessage(
@@ -406,7 +356,7 @@ describe('RealTimeService', () => {
         inboxConversation.messages.push(inboxMessage);
         eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        expect(chatTrackingEventsService.trackSendFirstMessage).toHaveBeenCalledWith(inboxConversation);
       });
     });
   });

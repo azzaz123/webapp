@@ -9,6 +9,7 @@ import {
   UnfavoriteItem,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 import { User } from '@core/user/user';
 import { UserService, USER_TYPE } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
@@ -16,9 +17,9 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class SearchListTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
+  constructor(private analyticsService: AnalyticsService, private userService: UserService, private searchIdService: SearchIdService) {}
 
-  public async trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string): Promise<void> {
+  public async trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string | null): Promise<void> {
     let isFeatured: boolean = null;
     let isCarDealer: boolean = null;
 
@@ -27,6 +28,8 @@ export class SearchListTrackingEventsService {
       isFeatured = user.featured;
       isCarDealer = user.type === USER_TYPE.PROFESSIONAL;
     }
+
+    this.updateSearchIdByItemId(itemCard.id, searchId);
 
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
@@ -106,5 +109,9 @@ export class SearchListTrackingEventsService {
         observer.complete();
       }
     });
+  }
+
+  private updateSearchIdByItemId(itemId: string, searchId: string | null): void {
+    searchId ? this.searchIdService.setSearchIdByItemId(itemId, searchId) : this.searchIdService.deleteSearchIdByItemId(itemId);
   }
 }

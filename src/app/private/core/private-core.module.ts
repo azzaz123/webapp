@@ -25,6 +25,7 @@ import { DeliveryDevelopmentGuard } from '@private/features/delivery/guards/deli
 import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions-http.service';
 import { YouGuard } from '@private/features/you/guards/you.guard';
 import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-real-time.service';
+import { ChatTrackingEventsService } from '@core/message/chat-tracking-events/chat-tracking-events.service';
 import { EnableDeliveryExperimentalFeaturesGuard } from '@private/features/delivery/guards/enable-delivery.guard';
 import { DeliveryExperimentalFeaturesService } from './services/delivery-experimental-features/delivery-experimental-features.service';
 
@@ -36,6 +37,7 @@ import { DeliveryExperimentalFeaturesService } from './services/delivery-experim
     DesktopNotificationsService,
     XmppService,
     RealTimeService,
+    ChatTrackingEventsService,
     DeliveryRealTimeService,
     InboxService,
     BlockUserService,

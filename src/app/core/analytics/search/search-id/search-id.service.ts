@@ -3,7 +3,9 @@ import { LOCAL_STORAGE_TOKEN } from '@core/local-storage/local-storage.token';
 import { SearchIdRecord } from './interfaces/search-id-record.interface';
 import { SearchId } from './interfaces/search-id.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SearchIdService {
   private readonly STORAGE_KEY = 'searchId';
   private readonly STORAGE_SYSTEM: Storage;
