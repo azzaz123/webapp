@@ -1,5 +1,5 @@
 export interface SalesAsBuyerDto {
-  next_page: number | null;
+  next_page?: number | null;
   sales: SaleAsBuyer[];
 }
 
@@ -11,14 +11,14 @@ interface SaleAsBuyer {
   item: {
     hash: string;
     id: string;
-    image_url: string;
+    image_url?: string;
     title: string;
   };
-  transaction_status: string;
+  transaction_status?: string | null;
   type: string;
-  user: {
+  user?: {
     hash: string;
     id: string;
-    image_url: string;
+    image_url?: string;
   };
 }
