@@ -30,7 +30,7 @@ describe('SalesAsBuyerHttpService', () => {
   });
 
   describe('when asking to get the sales as buyer to the server', () => {
-    describe('and when asking fo an specific page', () => {
+    describe('and when asking for an specific page', () => {
       const page: number = 2;
 
       beforeEach(() => {
