@@ -80,9 +80,7 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   }
 
   private get shouldShowTRXAwarenessModal(): boolean {
-    return (
-      !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS) && !this.userService.getLocalStore(DELIVERY_EXPERIMENTAL_FEATURES_KEY)
-    );
+    return !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS) && !localStorage.getItem(DELIVERY_EXPERIMENTAL_FEATURES_KEY);
   }
 
   private selectNavLink(routeURL: string): void {
