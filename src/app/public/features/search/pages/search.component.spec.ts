@@ -692,10 +692,6 @@ describe('SearchComponent', () => {
           expect(component['resetSearchId']).toBeTruthy();
         });
 
-        it('should clean searchId', () => {
-          expect(component['searchId']).toBeNull();
-        });
-
         describe('and a click item card is performed', () => {
           it('should send track click item card event with no searchId', () => {
             spyOn(searchListTrackingEventsService, 'trackClickItemCardEvent');
